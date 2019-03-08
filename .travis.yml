@@ -1,0 +1,21 @@
+language: node_js
+
+node_js:
+  - '10.15'
+
+script:
+  - npm install
+
+before_deploy:
+  - npm run build
+  - echo "wisdom.geonho.com" > CNAME
+  - mv CNAME public
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+  local-dir: public
+  keep-history: true
+  on:
+    branch: master
