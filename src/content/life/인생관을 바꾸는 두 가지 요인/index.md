@@ -1,5 +1,6 @@
 ---
 title: 인생관을 바꾸는 두 가지 요인
+description: 아프니까 청춘이다의 재해석
 tags:
 - concern
 - general

@@ -1,21 +1,54 @@
 import React from "react"
-import { Link } from "gatsby"
+import { graphql } from "gatsby"
 
 import Layout from "../components/layout"
-import Image from "../components/image"
 import SEO from "../components/seo"
 
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" keywords={[`gatsby`, `application`, `react`]} />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
-    <Link to="/page-2/">Go to page 2</Link>
+const IndexPage = ({ data }) => {
+  console.log(data);
+  return (
+    <Layout>
+    <SEO title="Home" keywords={[`geonho han`, `wisdom`, `all`]} />
+    {data.allMarkdownRemark.edges.map(edge => {
+      return (
+        <div>
+          <h1><span>@{edge.node.fields.category}</span> {edge.node.frontmatter.title}</h1>
+          <p>{edge.node.frontmatter.description}</p>
+          <time>{edge.node.frontmatter.date}</time>
+          <div>
+            {edge.node.frontmatter.tags.map(tag => {
+              return (
+                <span>#{tag} </span>
+              )
+            })}
+          </div>
+        </div>
+      )
+    })}
   </Layout>
-)
+  )
+}
 
 export default IndexPage
+
+export const query = graphql`
+  query {
+    allMarkdownRemark {
+      totalCount
+      edges {
+        node {
+          id
+          frontmatter {
+            title,
+            description,
+            date(formatString: "DD MMMM, YYYY"),
+            tags
+          }
+          fields {
+            category
+          }
+        }
+      }
+    }
+  }
+`
